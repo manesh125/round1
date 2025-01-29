@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3x3 Block Grid with Questions</title>
+    <style>
+		h1{color:white; align-items:center;}
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Background Video */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 10px;
+            width: 90%;
+            max-width: 450px;
+            height: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .block {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #0ac4bb;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 10px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .block input {
+            width: 90%;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 0.9em;
+        }
+
+        .block button {
+            background-color: #ffffff;
+            color: #0ac4bb;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .locked {
+            background: url('https://plus.unsplash.com/premium_photo-1678103472974-a6435884b194?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bXlzdGVyeXxlbnwwfHwwfHx8MA%3D%3D') no-repeat center center / cover;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .locked::after {
+            content: "🔒";
+            position: absolute;
+            font-size: 2em;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+		
+		.image-replacement {
+            width: 100%;
+            height: 100%;
+            background-size: no-repeat center center / cover;
+            background-position: center;
+        }
+
+        .locked input,
+        .locked button,
+        .locked div {
+            display: none;
+        }
+
+        #next-level {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #0ac4bb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const answers = ["Salman khan", "Kuch kuch hota hai", "PK", "Wanted", "Gully boy", "Om Shanti Om", "Bhaag milkha bhaag", "Ae Dil hai mushkil", "Mission kashmir"];
+            const blocks = document.querySelectorAll(".block");
+            const nextLevelButton = document.getElementById("next-level");
+
+            blocks.forEach((block, index) => {
+                const question = block.querySelector("div");
+                const input = block.querySelector("input");
+                const button = block.querySelector("button");
+                
+                if (index > 0) {
+                    block.classList.add("locked");
+                    question.classList.add("hidden");
+                }
+
+                button.addEventListener("click", () => {
+                    if (input.value.trim().toLowerCase() === answers[index].toLowerCase()) {
+                        block.innerHTML = `<div class="image-replacement" style="background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA09xPglouIIYrs5TFGfMDKaikdi_FgZFreA&s') no-repeat center center / cover;"></div>`;
+                        
+                        if (index + 1 < blocks.length) {
+                            const nextBlock = blocks[index + 1];
+                            nextBlock.classList.remove("locked");
+                            nextBlock.querySelector("div").classList.remove("hidden");
+                        } else {
+                            nextLevelButton.style.display = "block";
+                        }
+                    } else {
+                        alert("Incorrect answer. Try again!");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+	<h1>   Treasure <br>    Thunder</h1>
+    <video autoplay muted loop class="video-background">
+        <source src="https://www.dropbox.com/scl/fi/5glr9aq4d3yu4hk84xjgp/BG.mp4?rlkey=rwxrcgkerq7wlhch1tvnr9zsh&st=b5hzqlcg&dl=1" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="grid">
+        <div class="block"><div>Question 1: Which actor played the role of “Chulbul Pandey” in the film “Dabangg”?</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 2: Guess the Bollywood Movie: something something is happening.</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 3: In which film does Aamir Khan play an alien who lands on Earth and befriends a journalist?</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 4: In which movie does Salman Khan say "Ek baar jo maine commitment kar di, uske baad toh main khud ki bhi nahi sunta"?</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 5: Which film tells the story of a rapper from the slums of Mumbai who rises to fame while staying true to his root?</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 6: guess the movie from given dialogue"Ek chutki sindoor ki keemat tum kya jaano Ramesh Babu?"</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 7: Which Bollywood film is based on the life of Indian athlete Milkha Singh?</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 8: Guess the Bollywood Song: ‘You are my journey, you are my destination, living without you, O heart is difficult.’</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+        <div class="block"><div>Question 9: Which Bollywood film features a song titled "Bumbro"?</div><input type="text" placeholder="Your answer here"><button>Submit</button></div>
+    </div>
+    <button id="next-level" onclick="window.location.href='round 2.html'">Next Level</button>
+</body>
+</html>
